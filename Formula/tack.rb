@@ -12,6 +12,16 @@ class Tack < Formula
   end
 
   test do
-    system "false"
+    (testpath/"hello.c").write <<~EOF
+#include <stdio.h>
+int main(void)
+{
+        printf(\"Hello world\\n\");
+        return 0;
+}
+    EOF
+    system "#{bin}/ack", "-mcpm", "hello.c", "-o", "hello.com"
+    assert_predicate testpath/"hello.o", :exist?
+    assert_predicate testpath/"hello.com", :exist?
   end
 end
